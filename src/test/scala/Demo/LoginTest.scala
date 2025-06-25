@@ -6,13 +6,13 @@ import Demo.Data._
 
 class LoginTest extends Simulation{
 
-  // 1 Http Conf
+  // 1 Http Conf //
   val httpConf = http.baseUrl(url)
     .acceptHeader("application/json")
     //Verificar de forma general para todas las solicitudes
     .check(status.is(200))
 
-  // 2 Scenario Definition
+  // 2 Scenario Definition //
   val scn = scenario("Login").
     exec(http("login")
       .post(s"users/login")
@@ -22,7 +22,7 @@ class LoginTest extends Simulation{
       .check(jsonPath("$.token").saveAs("authToken"))
     )
 
-  // 3 Load Scenario
+  // 3 Load Scenario //
   setUp(
     scn.inject(rampUsersPerSec(5).to(15).during(30))
   ).protocols(httpConf);
